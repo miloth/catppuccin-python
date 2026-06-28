@@ -55,7 +55,7 @@ def make_flavor(identifier: str, fields: dict[str, Any]) -> Flavor:
     )
 
 
-def codegen() -> str:
+def palette_codegen() -> str:
     """Generate contents of `catppuccin/palette.py`."""
     palette_json = load_palette_json()
     palette = Palette(
@@ -73,21 +73,10 @@ def codegen() -> str:
     return "\n".join(lines)
 
 
-if __name__ == "__main__":
-    print("running codegen")
-    palette_path = Path.cwd() / "catppuccin" / "palette.py"
-    with palette_path.open("w", newline="\n") as f:
-        f.write(codegen())
-    print("formatting with ruff")
-    ruff_format = f"ruff format {palette_path}"
-    subprocess.run(ruff_format.split(), check=True, stdout=subprocess.DEVNULL)
-    print("palette.py generation complete")
-
-    # Generate the matplotlib styles
-    print("generating matplotlib styles")
-
+def generate_mpl_styles() -> None:
+    """Generate the matplotlib .mplstyle files."""
     template_text = (Path.cwd() / "matplotlib_template.txt").read_text()
-    reload(catppuccin)  # Reload the palette
+
     for key, palette in asdict(catppuccin.PALETTE).items():
         print(f"- {key}")
         text = template_text
@@ -97,7 +86,26 @@ if __name__ == "__main__":
                 f"<{color}>",
                 palette["colors"][color]["hex"].replace("#", ""),
             )
-        style_path = Path.cwd() / "catppuccin" / f"{key}.mplstyle"
+        style_path = Path(catppuccin.__file__).parent / f"{key}.mplstyle"
         with style_path.open("w", newline="\n") as f:
             f.write(text)
+
+
+def main() -> None:
+    print("running palette codegen")
+    palette_path = Path.cwd() / "catppuccin" / "palette.py"
+    with palette_path.open("w", newline="\n") as f:
+        f.write(palette_codegen())
+    print("formatting with ruff")
+    ruff_format = f"ruff format {palette_path}"
+    subprocess.run(ruff_format.split(), check=True, stdout=subprocess.DEVNULL)
+    print("palette.py generation complete")
+
+    print("generating matplotlib styles")
+    reload(catppuccin)  # Reload the palette
+    generate_mpl_styles()
     print("matplotlib styles generation complete")
+
+
+if __name__ == "__main__":
+    main()
