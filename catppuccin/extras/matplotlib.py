@@ -63,41 +63,21 @@ See the examples below for some use cases:
    ```
 """
 
-from __future__ import annotations
-
-from dataclasses import asdict
-from typing import TYPE_CHECKING, cast
-
 import matplotlib as mpl
 import matplotlib.colors
 
 from catppuccin.palette import PALETTE
 
-if TYPE_CHECKING:
-    from collections.abc import Iterable
-
-DEFAULT_COLORMAP_COLORS = ("base", "blue")
+DEFAULT_COLORMAP_COLORS = ("blue", "teal", "yellow", "peach", "red")
 
 
-def _register_colormap_list() -> None:
-    """Register the included color maps in the `matplotlib` colormap library."""
-    for palette_name in asdict(PALETTE):
-        cmap = get_colormap_from_list(palette_name, DEFAULT_COLORMAP_COLORS)
-        mpl.colormaps.register(cmap=cmap, name=palette_name, force=True)
-
-
-def get_colormap_from_list(
-    palette_name: str,
-    color_names: Iterable[str],
-) -> matplotlib.colors.LinearSegmentedColormap:
-    """Get a `matplotlib` colormap from a list of colors for a specific palette."""
-    colors = [load_color(palette_name, color_name) for color_name in color_names]
-    return matplotlib.colors.LinearSegmentedColormap.from_list(palette_name, colors)
-
-
-def load_color(palette_name: str, color_name: str) -> str:
-    """Load the color for a given palette and color name."""
-    return cast(
-        str,
-        PALETTE.__getattribute__(palette_name).colors.__getattribute__(color_name).hex,
+# Register the included color maps in the `matplotlib` colormap library.
+for _palette in PALETTE:
+    _cmap = matplotlib.colors.LinearSegmentedColormap.from_list(
+        _palette.identifier,
+        [
+            getattr(_palette.colors, color_name).hex
+            for color_name in ("blue", "teal", "yellow", "peach", "red")
+        ],
     )
+    mpl.colormaps.register(cmap=_cmap, name=_palette.identifier, force=True)
