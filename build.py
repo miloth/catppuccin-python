@@ -87,9 +87,7 @@ if __name__ == "__main__":
     # Generate the matplotlib styles
     print("generating matplotlib styles")
 
-    template_text = (
-        CATPPUCCIN_STYLE_DIRECTORY / "_catppuccin_template.txt"
-    ).read_text()
+    template_text = (Path.cwd() / "matplotlib_template.txt").read_text()
     reload(catppuccin)  # Reload the palette
     for key, palette in asdict(catppuccin.PALETTE).items():
         print(f"- {key}")
