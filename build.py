@@ -9,13 +9,9 @@ from importlib import reload
 from pathlib import Path
 from typing import Any, cast
 
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-
 import catppuccin
 from catppuccin.extras.matplotlib import CATPPUCCIN_STYLE_DIRECTORY
 from catppuccin.models import HSL, RGB, Color, Flavor, FlavorColors, Palette
-from example_plots import example_plots, plot_palette
 
 HEADER = '''"""Catppuccin palette definition."""
 from catppuccin.models import HSL, RGB, Color, Flavor, FlavorColors, Palette'''
@@ -108,26 +104,3 @@ if __name__ == "__main__":
         with style_path.open("w", newline="\n") as f:
             f.write(text)
     print("matplotlib styles generation complete")
-
-    # Generate matplotlib assets for the docs
-    print("generating matplotlib asset images")
-    reload(catppuccin)  # Reload the palette
-    for palette_name in asdict(catppuccin.PALETTE):
-        print(f"- {palette_name}")
-        mpl.style.use(f"catppuccin.extras.matplotlib_styles.{palette_name}")
-
-        palette_path = Path.cwd() / "assets" / palette_name
-        palette_path.mkdir(exist_ok=True, parents=True)
-
-        # Plot palette separately
-        print("  - palette")
-        fig = plot_palette(palette_name)
-        fig.savefig(palette_path / "palette.png", dpi=DPI)
-
-        # Plot examples
-        for filename, plot_function in example_plots.items():
-            print(f"  - {filename}")
-            fig = plot_function()
-            fig.savefig(palette_path / f"{filename}.png", dpi=DPI)
-            plt.close()
-    print("matplotlib asset image generation complete")
