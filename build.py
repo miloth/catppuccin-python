@@ -114,7 +114,7 @@ if __name__ == "__main__":
     reload(catppuccin)  # Reload the palette
     for palette_name in asdict(catppuccin.PALETTE):
         print(f"- {palette_name}")
-        mpl.style.use(palette_name)
+        mpl.style.use(f"catppuccin.extras.matplotlib_styles.{palette_name}")
 
         palette_path = Path.cwd() / "assets" / palette_name
         palette_path.mkdir(exist_ok=True, parents=True)
