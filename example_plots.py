@@ -142,7 +142,7 @@ def plot_examples(colormap_list: list[str]) -> None:
     for [ax, cmap] in zip(axs.flat, colormap_list):
         psm = ax.pcolormesh(data, cmap=cmap, rasterized=True, vmin=0.0, vmax=1.0)
         fig.colorbar(psm, ax=ax)
-    plt.show()
+        ax.set_title(cmap, fontsize=10)
 
 
 example_plots = {
@@ -158,18 +158,11 @@ if __name__ == "__main__":
     palette_name = "mocha"
     mpl.style.use(f"catppuccin.extras.matplotlib_styles.{palette_name}")
     plot_palette(palette_name)
-    plt.show()
     example_plot()
-    plt.show()
     example_scatter()
-    plt.show()
     example_boxplot()
-    plt.show()
     example_bar()
-    plt.show()
     example_patches()
-    plt.show()
     example_imshow()
-    plt.show()
     plot_examples(list(asdict(PALETTE).keys()))
     plt.show()
