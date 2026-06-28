@@ -10,7 +10,6 @@ from pathlib import Path
 from typing import Any, cast
 
 import catppuccin
-from catppuccin.extras.matplotlib import CATPPUCCIN_STYLE_DIRECTORY
 from catppuccin.models import HSL, RGB, Color, Flavor, FlavorColors, Palette
 
 HEADER = '''"""Catppuccin palette definition."""
@@ -98,7 +97,7 @@ if __name__ == "__main__":
                 f"<{color}>",
                 palette["colors"][color]["hex"].replace("#", ""),
             )
-        style_path = CATPPUCCIN_STYLE_DIRECTORY / f"{key}.mplstyle"
+        style_path = Path.cwd() / "catppuccin" / f"{key}.mplstyle"
         with style_path.open("w", newline="\n") as f:
             f.write(text)
     print("matplotlib styles generation complete")

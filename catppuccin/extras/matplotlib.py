@@ -66,7 +66,6 @@ See the examples below for some use cases:
 from __future__ import annotations
 
 from dataclasses import asdict
-from pathlib import Path
 from typing import TYPE_CHECKING, cast
 
 import matplotlib as mpl
@@ -77,7 +76,6 @@ from catppuccin.palette import PALETTE
 if TYPE_CHECKING:
     from collections.abc import Iterable
 
-CATPPUCCIN_STYLE_DIRECTORY = Path(__file__).parent / "matplotlib_styles"
 DEFAULT_COLORMAP_COLORS = ("base", "blue")
 
 
