@@ -5,9 +5,15 @@ from __future__ import annotations
 import json
 import subprocess
 from dataclasses import asdict
+from importlib import reload
 from pathlib import Path
 from typing import Any, cast
 
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+
+import catppuccin
+from catppuccin.extras.matplotlib import CATPPUCCIN_STYLE_DIRECTORY
 from catppuccin.models import HSL, RGB, Color, Flavor, FlavorColors, Palette
 from example_plots import example_plots, plot_palette
 
@@ -84,14 +90,12 @@ if __name__ == "__main__":
 
     # Generate the matplotlib styles
     print("generating matplotlib styles")
-    from catppuccin.extras.matplotlib import CATPPUCCIN_STYLE_DIRECTORY
-    from catppuccin.palette import PALETTE
 
     template_text = (
         CATPPUCCIN_STYLE_DIRECTORY / "_catppuccin_template.txt"
     ).read_text()
-
-    for key, palette in asdict(PALETTE).items():
+    reload(catppuccin)  # Reload the palette
+    for key, palette in asdict(catppuccin.PALETTE).items():
         print(f"- {key}")
         text = template_text
         text = text.replace("<palette>", key)
@@ -106,13 +110,9 @@ if __name__ == "__main__":
     print("matplotlib styles generation complete")
 
     # Generate matplotlib assets for the docs
-    import matplotlib as mpl
-    import matplotlib.pyplot as plt
-
-    import catppuccin  # This loads the styles in matplotlib  # noqa: F401
-
     print("generating matplotlib asset images")
-    for palette_name in asdict(PALETTE):
+    reload(catppuccin)  # Reload the palette
+    for palette_name in asdict(catppuccin.PALETTE):
         print(f"- {palette_name}")
         mpl.style.use(palette_name)
 
