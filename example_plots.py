@@ -156,7 +156,7 @@ example_plots = {
 
 if __name__ == "__main__":
     palette_name = "mocha"
-    mpl.style.use(palette_name)
+    mpl.style.use(f"catppuccin.extras.matplotlib_styles.{palette_name}")
     plot_palette(palette_name)
     plt.show()
     example_plot()

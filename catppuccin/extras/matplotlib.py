@@ -71,7 +71,6 @@ from typing import TYPE_CHECKING, cast
 
 import matplotlib as mpl
 import matplotlib.colors
-import matplotlib.style
 
 from catppuccin.palette import PALETTE
 
@@ -80,14 +79,6 @@ if TYPE_CHECKING:
 
 CATPPUCCIN_STYLE_DIRECTORY = Path(__file__).parent / "matplotlib_styles"
 DEFAULT_COLORMAP_COLORS = ("base", "blue")
-
-
-def _register_styles() -> None:
-    """Register the included stylesheets in the mpl style library."""
-    catppuccin_stylesheets = mpl.style.core.read_style_directory(  # type: ignore [attr-defined]
-        CATPPUCCIN_STYLE_DIRECTORY
-    )
-    mpl.style.core.update_nested_dict(mpl.style.library, catppuccin_stylesheets)  # type: ignore [attr-defined]
 
 
 def _register_colormap_list() -> None:

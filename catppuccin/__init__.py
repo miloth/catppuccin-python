@@ -91,7 +91,6 @@ from catppuccin.palette import PALETTE as PALETTE
 
 # Attempt to register styles and colormaps if matplotlib is available
 if importlib.util.find_spec("matplotlib") is not None:
-    from catppuccin.extras.matplotlib import _register_colormap_list, _register_styles
+    from catppuccin.extras.matplotlib import _register_colormap_list
 
-    _register_styles()
     _register_colormap_list()
