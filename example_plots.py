@@ -131,29 +131,6 @@ def example_imshow() -> plt.Figure:  # type: ignore [name-defined]
     return fig
 
 
-def plot_examples(colormap_list: list[str]) -> None:
-    """Plot data with associated colormap."""
-    rng = np.random.default_rng(SEED)
-    data = rng.random((30, 30))
-    n = len(colormap_list)
-    fig, axs = plt.subplots(
-        1, n, figsize=(n * 2 + 2, 3), constrained_layout=True, squeeze=False
-    )
-    for [ax, cmap] in zip(axs.flat, colormap_list):
-        psm = ax.pcolormesh(data, cmap=cmap, rasterized=True, vmin=0.0, vmax=1.0)
-        fig.colorbar(psm, ax=ax)
-        ax.set_title(cmap, fontsize=10)
-
-
-example_plots = {
-    "plot": example_plot,
-    "scatter": example_scatter,
-    "boxplot": example_boxplot,
-    "bar": example_bar,
-    "patches": example_patches,
-    "imshow": example_imshow,
-}
-
 if __name__ == "__main__":
     palette_name = "mocha"
     mpl.style.use(f"catppuccin.{palette_name}")
