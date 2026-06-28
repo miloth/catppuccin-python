@@ -9,58 +9,71 @@ See the examples below for some use cases:
 
 1. Load a style, using `mpl.style.use`
 
-   ```python
-   import catppuccin
-   import matplotlib as mpl
-   import matplotlib.pyplot as plt
+    ```python
+    import catppuccin
+    import matplotlib.pyplot as plt
 
-   mpl.style.use(catppuccin.PALETTE.mocha.identifier)
-   plt.plot([0,1,2,3], [1,2,3,4])
-   plt.show()
-   ```
+    plt.style.use(catppuccin.PALETTE.mocha.matplotlib_style)
+    plt.plot([0,1,2,3], [1,2,3,4])
+    plt.show()
+    ```
 
 1. Mix it with different stylesheets!
 
-   ```python
-   import catppuccin
-   import matplotlib as mpl
-   import matplotlib.pyplot as plt
+    ```python
+    import catppuccin
+    import matplotlib.pyplot as plt
 
-   mpl.style.use(["ggplot", catppuccin.PALETTE.mocha.identifier])
-   plt.plot([0,1,2,3], [1,2,3,4])
-   plt.show()
-   ```
+    plt.style.use(["ggplot", catppuccin.PALETTE.mocha.matplotlib_style])
+    plt.plot([0,1,2,3], [1,2,3,4])
+    plt.show()
+    ```
 
 1. Load individual colors
 
-   ```python
-   import matplotlib.pyplot as plt
-   import catppuccin
-   from catppuccin.extras.matplotlib import load_color
+    ```python
+    import matplotlib.pyplot as plt
+    import catppuccin
 
-   color = load_color(catppuccin.PALETTE.latte.identifier, "peach")
-   plt.plot([0,1,2,3], [1,2,3,4], color=color)
-   plt.show()
-   ```
+    plt.plot([0,1,2,3], [1,2,3,4], color=catppuccin.PALETTE.latte.colors.peach.hex)
+    plt.show()
+    ```
+
+1. Just use the colormaps in your plots
+
+    ```python
+    import matplotlib.pyplot as plt
+    import numpy as np
+    import catppuccin
+
+    rng = np.random.default_rng()
+    data = rng.integers(10, size=(30, 30))
+
+    plt.imshow(data, cmap=catppuccin.PALETTE.mocha.cmap)
+    plt.show()
+    ```
 
 1. Define custom colormaps
 
-   ```python
-   import matplotlib.pyplot as plt
-   import numpy as np
-   import catppuccin
-   from catppuccin.extras.matplotlib import get_colormap_from_list
+    ```python
+    import matplotlib.pyplot as plt
+    import numpy as np
+    import catppuccin
+    from matplotlib.colors import LinearSegmentedColormap
 
-   cmap = get_colormap_from_list(
-       catppuccin.PALETTE.frappe.identifier,
-       ["red", "peach", "yellow", "green"],
-   )
-   rng = np.random.default_rng()
-   data = rng.integers(2, size=(30, 30))
+    cmap = LinearSegmentedColormap.from_list(
+        "my_custom_palette",
+        [
+            getattr(catppuccin.PALETTE.frappe.colors, color_name).hex
+            for color_name in ["red", "peach", "yellow", "green"]
+        ],
+    )
+    rng = np.random.default_rng()
+    data = rng.integers(10, size=(30, 30))
 
-   plt.imshow(data, cmap=cmap)
-   plt.show()
-   ```
+    plt.imshow(data, cmap=cmap)
+    plt.show()
+    ```
 """
 
 import matplotlib as mpl
